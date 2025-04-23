@@ -5,14 +5,11 @@ cargo install kalc
 ```
 
 #### Usage
-Basic operations:
-`kalc 2 + 3 * 4`
-Using parentheses:
-`kalc 5 + 3 / 2`
+###### Basic operations:
+```kalc 2 + 3 * 4```
+
 Help and options:
-`kalc --help`
-```
-```
+```kalc --help```
 
 #### Build from source
 
@@ -20,5 +17,4 @@ Help and options:
 git clone https://github.com/yourusername/kalc
 cd kalc
 cargo build --release
-```
 ```

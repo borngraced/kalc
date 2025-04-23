@@ -1,6 +1,8 @@
 use anyhow::{Result, anyhow};
 use std::{env::args, io::stdin, iter::Peekable, slice::Iter};
 
+const VERSION: &str = "0.1.2";
+
 #[derive(Debug, Clone)]
 enum Token {
     Add,
@@ -28,11 +30,20 @@ fn tokenize<'a>(mut src: Peekable<Iter<'a, char>>) -> Result<Vec<Token>> {
             '/' => tokens.push(Token::Div),
             '0'..='9' => {
                 let mut digits = String::from(*n);
-                while let Some(k) = src.peek() {
+                let mut has_decimal = false;
+                while let Some(&&k) = src.peek() {
                     if !k.is_numeric() {
-                        break;
+                        if k == '.' {
+                            if has_decimal {
+                                return Err(anyhow!("Invalid math expression"));
+                            }
+
+                            has_decimal = true;
+                        } else {
+                            break;
+                        }
                     }
-                    digits.push(**k);
+                    digits.push(k);
                     src.next();
                 }
                 tokens.push(Token::Number(digits.parse::<f64>()?));
@@ -100,22 +111,25 @@ impl<'a> Parser<'a> {
         self.tokens.next()
     }
 
-    fn parse_program(&mut self) -> Option<ASTNode> {
+    fn parse_program(&mut self) -> Result<Option<ASTNode>> {
         self.parse_additive()
     }
 
-    fn parse_additive(&mut self) -> Option<ASTNode> {
-        let mut expr = self.parse_multiplicative()?;
+    fn parse_additive(&mut self) -> Result<Option<ASTNode>> {
+        let Some(mut expr) = self.parse_multiplicative()? else {
+            return Ok(None);
+        };
 
         while let Some(token) = self.peek() {
             let op = match token {
                 Token::Add => Op::Add,
                 Token::Sub => Op::Sub,
+                Token::Number(_) => return Err(anyhow!("Invalid math expression")),
                 _ => break,
             };
             self.advance();
 
-            if let Some(right) = self.parse_multiplicative() {
+            if let Some(right) = self.parse_multiplicative()? {
                 expr = ASTNode::BinaryOp {
                     left: Box::new(expr),
                     op,
@@ -126,21 +140,24 @@ impl<'a> Parser<'a> {
             }
         }
 
-        Some(expr)
+        Ok(Some(expr))
     }
 
-    fn parse_multiplicative(&mut self) -> Option<ASTNode> {
-        let mut expr = self.parse_primary_exp()?;
+    fn parse_multiplicative(&mut self) -> Result<Option<ASTNode>> {
+        let Some(mut expr) = self.parse_primary_exp()? else {
+            return Ok(None);
+        };
 
         while let Some(token) = self.peek() {
             let op = match token {
                 Token::Mul => Op::Mul,
                 Token::Div => Op::Div,
+                Token::Number(_) => return Err(anyhow!("Invalid math expression")),
                 _ => break,
             };
             self.advance();
 
-            if let Some(right) = self.parse_primary_exp() {
+            if let Some(right) = self.parse_primary_exp()? {
                 expr = ASTNode::BinaryOp {
                     left: Box::new(expr),
                     op,
@@ -151,15 +168,15 @@ impl<'a> Parser<'a> {
             }
         }
 
-        Some(expr)
+        Ok(Some(expr))
     }
 
-    fn parse_primary_exp(&mut self) -> Option<ASTNode> {
+    fn parse_primary_exp(&mut self) -> Result<Option<ASTNode>> {
         let Some(Token::Number(n)) = self.peek() else {
-            return None;
+            return Ok(None);
         };
         let n = *n;
-        self.advance().map(|_| ASTNode::Number(n))
+        Ok(self.advance().map(|_| ASTNode::Number(n)))
     }
 }
 
@@ -200,7 +217,7 @@ fn print_help() {
     println!();
 
     println!("VERSION:");
-    println!("  kalc-cli v0.1.1");
+    println!("  kalc-cli {VERSION}");
 }
 
 fn main() -> Result<()> {
@@ -211,13 +228,13 @@ fn main() -> Result<()> {
             print_help();
             return Ok(());
         } else if args[1] == "-v" || args[1] == "--version" {
-            println!("kalc v0.1.0");
+            println!("kalc {VERSION}");
             return Ok(());
         }
     }
 
     let expr = if args.len() <= 1 {
-        println!("kalc v0.1.0");
+        println!("kalc {VERSION}");
         println!("Enter an expression (or type 'help' for instructions):");
 
         let mut input = String::new();
@@ -239,10 +256,10 @@ fn main() -> Result<()> {
     let tokens = tokenize(chars.iter().peekable())?;
     let mut ast = Parser::new(tokens.iter().peekable());
     let ast = ast
-        .parse_program()
+        .parse_program()?
         .ok_or(anyhow!("unable to parse expression"))?;
-
     let result = format_float(ast.eval());
+
     println!("{result}");
 
     Ok(())

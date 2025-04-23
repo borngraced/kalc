@@ -1,5 +1,5 @@
 [package]
-name = "kalc"
+name = "kalc-cli"
 version = "0.1.0"
 edition = "2024"
 description = "kalc - quick basic math kalculator in cli"

@@ -159,8 +159,7 @@ impl<'a> Parser<'a> {
             return None;
         };
         let n = *n;
-
-        self.advance().map(|_| ASTNode::Number(nn))
+        self.advance().map(|_| ASTNode::Number(n))
     }
 }
 

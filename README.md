@@ -1,11 +1,11 @@
-### kalc - quick basic math kalculator in cli 
+## kalc - quick basic math kalculator in cli 
 
 ```
-cargo install kalc
+cargo install kalc-cli
 ```
 
-#### Usage
-###### Basic operations:
+### Usage
+Basic operation:
 ```kalc 2 + 3 * 4```
 
 Help and options:

@@ -172,7 +172,7 @@ fn format_float(num: f64) -> String {
 }
 
 fn print_help() {
-    println!("Cli Mini kalculator");
+    println!("kalc");
     println!();
 
     println!("USAGE:");
@@ -196,7 +196,7 @@ fn print_help() {
     println!();
 
     println!("NOTES:");
-    println!("  - If no expression is provided, kalculator will read from stdin");
+    println!("  - If no expression is provided, kalcwill read from stdin");
     println!();
 
     println!("VERSION:");

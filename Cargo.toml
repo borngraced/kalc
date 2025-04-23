@@ -2,13 +2,13 @@
 name = "kalc"
 version = "0.1.0"
 edition = "2024"
-description = "kalc - math calculator in cli"
+description = "kalc - quick basic math kalculator in cli"
 authors = ["Samuel Onoja <samiodev@icloud.com>"]
 license = "MIT"
 repository = "https://github.com/borngraced/kalc"
 documentation = "https://github.com/borngraced/kalc#readme"
 readme = "README.md"
-keywords = ["kalculator", "math", "cli", "parser"]
+keywords = ["calculator", "math", "cli", "parser"]
 categories = ["command-line-utilities", "mathematics"]
 
 [dependencies]

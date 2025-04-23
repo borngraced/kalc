@@ -1,7 +1,4 @@
-### kalc
-
-
-math kalculator in cli 
+### kalc - quick basic math kalculator in cli 
 
 ```
 cargo install kalc

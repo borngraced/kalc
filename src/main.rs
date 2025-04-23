@@ -172,7 +172,7 @@ fn format_float(num: f64) -> String {
 }
 
 fn print_help() {
-    println!("kalc");
+    println!("kalc-cli");
     println!();
 
     println!("USAGE:");
@@ -200,7 +200,7 @@ fn print_help() {
     println!();
 
     println!("VERSION:");
-    println!("  kalc v0.1.0");
+    println!("  kalc-cli v0.1.1");
 }
 
 fn main() -> Result<()> {

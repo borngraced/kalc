@@ -1,4 +1,4 @@
-## kalc - quick basic math kalculator in cli 
+## kalc-cli - quick basic math kalculator in cli 
 
 ```
 cargo install kalc-cli
@@ -14,7 +14,7 @@ Help and options:
 #### Build from source
 
 ```
-git clone https://github.com/yourusername/kalc
+git clone https://github.com/borngraced/kalc-cli
 cd kalc
 cargo build --release
 ```

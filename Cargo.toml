@@ -1,0 +1,19 @@
+[package]
+name = "calc"
+version = "0.1.0"
+edition = "2024"
+description = "A simple cli math calculator."
+authors = ["Samuel Onoja<samiodev@icloud.com>"]
+license = "MIT"
+repository = "https://github.com/borngraced/calc"
+documentation = "https://github.com/borngraced/calc#readme"
+readme = "README.md"
+keywords = ["calculator", "math", "cli", "parser"]
+categories = ["command-line-utilities", "mathematics"]
+
+[dependencies]
+anyhow = "1.0"
+
+[[bin]]
+name = "calc"
+path = "src/main.rs"

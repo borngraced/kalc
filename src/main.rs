@@ -158,8 +158,7 @@ impl<'a> Parser<'a> {
         let Some(Token::Number(n)) = self.peek() else {
             return None;
         };
-        let nn = *n;
-        let _ = n;
+        let n = *n;
 
         self.advance().map(|_| ASTNode::Number(nn))
     }
@@ -174,11 +173,11 @@ fn format_float(num: f64) -> String {
 }
 
 fn print_help() {
-    println!("Cli Mini Calculator");
+    println!("Cli Mini kalculator");
     println!();
 
     println!("USAGE:");
-    println!("  calc [OPTIONS] [EXPRESSION]");
+    println!("  kalc [OPTIONS] [EXPRESSION]");
     println!();
 
     println!("OPTIONS:");
@@ -192,17 +191,17 @@ fn print_help() {
     println!();
 
     println!("EXAMPLES:");
-    println!("  calc 2 + 3 * 4");
-    println!("  calc 5 + 3 / 2");
-    println!("  calc 3.14 * 2.5");
+    println!("  kalc 2 + 3 * 4");
+    println!("  kalc 5 + 3 / 2");
+    println!("  kalc 3.14 * 2.5");
     println!();
 
     println!("NOTES:");
-    println!("  - If no expression is provided, calculator will read from stdin");
+    println!("  - If no expression is provided, kalculator will read from stdin");
     println!();
 
     println!("VERSION:");
-    println!("  calc v0.1.0");
+    println!("  kalc v0.1.0");
 }
 
 fn main() -> Result<()> {
@@ -213,13 +212,13 @@ fn main() -> Result<()> {
             print_help();
             return Ok(());
         } else if args[1] == "-v" || args[1] == "--version" {
-            println!("calc v0.1.0");
+            println!("kalc v0.1.0");
             return Ok(());
         }
     }
 
     let expr = if args.len() <= 1 {
-        println!("Calculator v0.1.0");
+        println!("kalc v0.1.0");
         println!("Enter an expression (or type 'help' for instructions):");
 
         let mut input = String::new();
